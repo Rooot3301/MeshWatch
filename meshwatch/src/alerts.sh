@@ -97,6 +97,26 @@ detect_anomalies() {
     local max_conn=$(get_config MAX_CONN)
     local max_bandwidth=$(get_config MAX_BANDWIDTH_MBPS)
     
+    # Valider les valeurs numériques
+    connections=${connections:-0}
+    bandwidth_mbps=${bandwidth_mbps:-0}
+    max_conn=${max_conn:-150}
+    max_bandwidth=${max_bandwidth:-500}
+    
+    # S'assurer que les valeurs sont des entiers
+    if ! [[ "$connections" =~ ^[0-9]+$ ]]; then
+        connections=0
+    fi
+    if ! [[ "$bandwidth_mbps" =~ ^[0-9]+$ ]]; then
+        bandwidth_mbps=0
+    fi
+    if ! [[ "$max_conn" =~ ^[0-9]+$ ]]; then
+        max_conn=150
+    fi
+    if ! [[ "$max_bandwidth" =~ ^[0-9]+$ ]]; then
+        max_bandwidth=500
+    fi
+    
     # Vérifier le nombre de connexions
     if (( connections > max_conn )); then
         if check_alert_cooldown "high_connections"; then

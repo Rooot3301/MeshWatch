@@ -1,8 +1,18 @@
-# MeshWatch 🕸️
+# MeshWatch 🌌 - Star Déception Network Monitor
 
-**Système de surveillance dynamique des flux réseau pour serveurs de jeu**
+**Système de surveillance réseau pour l'architecture meshing dynamique de Star Déception**
 
-MeshWatch est un outil de monitoring réseau avancé conçu spécifiquement pour surveiller les flux sortants des serveurs de jeu dans un environnement de serveurs maillés (mesh). Il offre une surveillance temps réel, la détection d'anomalies et un système d'alertes intégré.
+MeshWatch est un outil de monitoring réseau spécialement développé pour **Star Déception**, un projet de jeu multijoueur utilisant une architecture de serveurs maillés dynamiques. Il surveille les flux inter-serveurs, détecte les anomalies de connectivité et assure la stabilité du mesh réseau en temps réel.
+
+## 🎮 À propos de Star Déception
+
+**Star Déception** est un jeu multijoueur ambitieux utilisant une architecture de **serveur meshing dynamique** où :
+- Les serveurs se connectent dynamiquement entre eux
+- Les joueurs peuvent se déplacer fluidement entre différents nœuds
+- La charge est répartie automatiquement selon l'activité
+- La redondance assure une haute disponibilité
+
+MeshWatch surveille cette infrastructure critique pour garantir une expérience de jeu optimale.
 
 ## 🚀 Fonctionnalités
 
@@ -12,22 +22,24 @@ MeshWatch est un outil de monitoring réseau avancé conçu spécifiquement pour
 - **Configuration en temps réel** sans redémarrage nécessaire
 - **Vue des flux en direct** avec rafraîchissement automatique
 
-### 📊 Surveillance Réseau
-- **Monitoring des ports** configurables (liste ou plages)
-- **Calcul du débit** réseau en temps réel (Mbps)
-- **Comptage des connexions** actives sur les ports surveillés
-- **Vérification de connectivité** avec serveur orchestrateur
-- **Auto-détection** de l'interface réseau principale
+### 🌐 Surveillance Mesh Réseau
+- **Monitoring des ports mesh** configurables pour Star Déception
+- **Calcul du débit inter-serveurs** en temps réel (Mbps)
+- **Comptage des connexions** entre nœuds du mesh
+- **Vérification de connectivité** avec l'orchestrateur central
+- **Auto-détection** de l'interface réseau du mesh
+- **Surveillance des flux de synchronisation** entre serveurs
 
-### 🚨 Système d'Alertes
-- **Détection d'anomalies** automatique :
-  - Débit réseau élevé
-  - Trop de connexions simultanées
-  - Timeout avec l'orchestrateur
-  - Absence de flux sortant
-- **Alertes Discord** avec embeds colorés et informations détaillées
-- **Système de cooldown** pour éviter le spam d'alertes
-- **Journalisation locale** avec rotation automatique
+### 🚨 Système d'Alertes Mesh
+- **Détection d'anomalies** spécifiques au meshing :
+  - Débit inter-serveurs anormal
+  - Perte de connexion avec nœuds voisins
+  - Timeout avec l'orchestrateur central
+  - Désynchronisation du mesh
+  - Surcharge d'un nœud spécifique
+- **Alertes Discord** pour l'équipe Star Déception
+- **Système de cooldown** intelligent
+- **Journalisation** des événements mesh critiques
 
 ### ⚙️ Configuration Avancée
 - **Seuils personnalisables** pour tous les types d'alertes
@@ -98,48 +110,48 @@ chmod +x src/*.sh
 ./meshwatch.sh
 ```
 
-## 🎮 Configuration pour Serveurs de Jeu
+## 🔧 Configuration pour Star Déception
 
-### Minecraft
+### Serveur Mesh Principal
 ```bash
-PORTS="25565"
-ORCHESTRATOR_HOST="lobby.minecraft-server.com"
-MAX_CONN="100"
-MAX_BANDWIDTH_MBPS="200"
+PORTS="7777,7778,7779"  # Ports mesh Star Déception
+ORCHESTRATOR_HOST="orchestrator.star-deception.com"
+MAX_CONN="150"          # Connexions inter-serveurs
+MAX_BANDWIDTH_MBPS="500" # Débit mesh élevé
 ```
 
-### ARK: Survival Evolved
+### Nœud Secondaire
 ```bash
-PORTS="7777,7778,27015"
-ORCHESTRATOR_HOST="cluster.ark-server.com"
-MAX_CONN="70"
-MAX_BANDWIDTH_MBPS="500"
+PORTS="7780-7790"       # Plage dynamique
+ORCHESTRATOR_HOST="mesh-coordinator.star-deception.com"
+MAX_CONN="75"           # Nœud plus petit
+MAX_BANDWIDTH_MBPS="250"
 ```
 
-### Multi-jeux
+### Cluster Complet
 ```bash
-PORTS="7777,25565,27015,7000-8000"
-ORCHESTRATOR_HOST="orchestrator.gaming-network.com"
-MAX_CONN="200"
-MAX_BANDWIDTH_MBPS="1000"
+PORTS="7777-7800,8000-8100"  # Mesh complet
+ORCHESTRATOR_HOST="master.star-deception.com"
+MAX_CONN="300"               # Cluster haute capacité
+MAX_BANDWIDTH_MBPS="1000"    # Débit mesh maximal
 ```
 
 ## 🔧 Configuration Discord
 
-### Création du Webhook
-1. Aller dans les **paramètres du serveur Discord**
-2. Sélectionner **Intégrations** → **Webhooks**
-3. Cliquer sur **Nouveau Webhook**
-4. Configurer le nom et le canal
-5. **Copier l'URL du webhook**
+### Configuration pour l'équipe
+1. Aller dans le **serveur Discord Star Déception**
+2. Canal **#mesh-monitoring** → **Paramètres** → **Intégrations**
+3. Créer un **Nouveau Webhook** nommé "MeshWatch"
+4. **Copier l'URL** pour la configuration
 
 ### Format de l'URL
 ```
-https://discord.com/api/webhooks/123456789/abcdefghijklmnopqrstuvwxyz
+https://discord.com/api/webhooks/STAR_DECEPTION_ID/TOKEN_MESH_MONITORING
 ```
 
 ### Test du Webhook
-MeshWatch teste automatiquement le webhook lors de la configuration et envoie un message de confirmation.
+MeshWatch teste automatiquement le webhook et envoie : 
+`🌌 MeshWatch Star Déception - Surveillance mesh activée !`
 
 ## 📋 Utilisation
 
@@ -199,23 +211,23 @@ Utilisez `Ctrl+C` pour revenir au menu principal.
 
 ## 🔍 Monitoring et Alertes
 
-### Types d'Anomalies Détectées
+### Types d'Anomalies Mesh Détectées
 
-1. **Débit élevé** 🟡
-   - Seuil dépassé sur le débit réseau
-   - Couleur : Orange dans Discord
+1. **Surcharge Mesh** 🟡
+   - Débit inter-serveurs anormalement élevé
+   - Peut indiquer une migration massive de joueurs
 
-2. **Trop de connexions** 🟠
-   - Nombre de connexions simultanées dépassé
-   - Couleur : Orange dans Discord
+2. **Saturation Nœud** 🟠
+   - Trop de connexions simultanées sur un nœud
+   - Nécessite redistribution de charge
 
-3. **Timeout orchestrateur** 🔴
-   - Perte de connectivité avec le serveur orchestrateur
-   - Couleur : Rouge dans Discord
+3. **Perte Orchestrateur** 🔴
+   - Connexion perdue avec l'orchestrateur central
+   - Risque de désynchronisation du mesh
 
-4. **Absence de flux sortant** 🟡
-   - Aucune activité réseau détectée
-   - Couleur : Orange dans Discord
+4. **Isolation Nœud** 🔴
+   - Nœud isolé du mesh (aucun flux sortant)
+   - Nécessite reconnexion d'urgence
 
 ### Système de Cooldown
 
@@ -251,7 +263,7 @@ meshwatch/logs/meshwatch.log.2    # ...
 - **Fichiers de configuration** : Lecture/écriture utilisateur uniquement
 - **Logs** : Accessible en lecture pour analyse
 
-### Webhook Discord
+### Webhook Discord Star Déception
 - **URL sécurisée** : Ne jamais partager l'URL du webhook
 - **Test automatique** : Validation lors de la configuration
 - **Masquage** : L'URL est partiellement masquée dans l'affichage
@@ -318,36 +330,36 @@ rm -rf /tmp/meshwatch_cooldowns/
 rm -f meshwatch/config/meshwatch.conf
 ```
 
-## 🤝 Contribution
+## 🤝 Contribution au Projet Star Déception
 
-### Signaler un Bug
-1. Vérifier que le bug n'est pas déjà signalé
-2. Fournir les informations système (OS, version Bash)
-3. Inclure les logs pertinents
-4. Décrire les étapes pour reproduire
+### Signaler un Problème Mesh
+1. Vérifier dans **#mesh-monitoring** si le problème est connu
+2. Fournir les **logs MeshWatch** et configuration serveur
+3. Inclure la **topologie mesh** au moment du problème
+4. Mentionner l'**impact sur les joueurs** Star Déception
 
-### Proposer une Amélioration
-1. Décrire clairement la fonctionnalité souhaitée
-2. Expliquer le cas d'usage
-3. Proposer une implémentation si possible
+### Améliorer le Monitoring
+1. Proposer des **métriques mesh** spécifiques
+2. Suggérer des **seuils optimaux** pour Star Déception
+3. Contribuer aux **alertes intelligentes**
 
 ### Développement
-1. Fork du projet
-2. Créer une branche pour la fonctionnalité
-3. Respecter le style de code existant
-4. Tester sur différents environnements
-5. Soumettre une pull request
+1. Comprendre l'**architecture mesh** de Star Déception
+2. Tester sur l'**environnement de développement** mesh
+3. Valider avec l'**équipe infrastructure**
+4. Déployer sur les **serveurs de test** avant production
 
 ## 📄 Licence
 
 Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
-## 🙏 Remerciements
+## 🌌 Remerciements Star Déception
 
-- **Communauté gaming** pour les retours et suggestions
-- **Contributeurs** pour les améliorations et corrections
-- **Testeurs** pour la validation sur différents environnements
+- **Équipe Star Déception** pour la vision du meshing dynamique
+- **Développeurs mesh** pour l'architecture innovante
+- **Testeurs alpha** pour la validation en conditions réelles
+- **Communauté** pour les retours sur la stabilité réseau
 
 ---
 
-**MeshWatch v2.0** - Surveillance réseau intelligente pour serveurs de jeu 🎮
+**MeshWatch v2.0** - Surveillance mesh pour Star Déception 🌌🕸️

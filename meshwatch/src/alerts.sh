@@ -54,17 +54,22 @@ send_discord_alert() {
         "color": $color,
         "timestamp": "$timestamp",
         "footer": {
-            "text": "MeshWatch Alert System - $hostname"
+            "text": "MeshWatch Star Déception - $hostname"
         },
         "fields": [
             {
-                "name": "Serveur",
+                "name": "Nœud Mesh",
                 "value": "$hostname",
                 "inline": true
             },
             {
-                "name": "Interface",
+                "name": "Interface Mesh",
                 "value": "$(get_config INTERFACE)",
+                "inline": true
+            },
+            {
+                "name": "Orchestrateur",
+                "value": "$(get_config ORCHESTRATOR_HOST)",
                 "inline": true
             }
         ]
@@ -140,7 +145,7 @@ test_discord_webhook() {
         return 1
     fi
     
-    local test_payload='{"content":"🧪 Test MeshWatch - Webhook configuré avec succès!"}'
+    local test_payload='{"content":"🌌 MeshWatch Star Déception - Surveillance mesh activée !"}'
     
     if curl -H "Content-Type: application/json" \
             -X POST \

@@ -9,15 +9,15 @@ readonly DEFAULT_CONFIG_FILE="$CONFIG_DIR/default.conf"
 
 # Variables de configuration par défaut
 declare -A DEFAULT_CONFIG=(
-    ["PORTS"]="7777,27015,25565"
-    ["ORCHESTRATOR_HOST"]="orchestrator.example.com"
+    ["PORTS"]="7777,7778,7779"
+    ["ORCHESTRATOR_HOST"]="orchestrator.star-deception.com"
     ["DISCORD_WEBHOOK"]=""
     ["MONITORING_ENABLED"]="false"
     ["LOGGING_ENABLED"]="true"
     ["LANG"]="fr"
     ["ALERT_TIMEOUT"]="120"
-    ["MAX_CONN"]="50"
-    ["MAX_BANDWIDTH_MBPS"]="100"
+    ["MAX_CONN"]="150"
+    ["MAX_BANDWIDTH_MBPS"]="500"
     ["INTERFACE"]=""
     ["ALERT_COOLDOWN"]="300"
     ["LOG_ROTATION_SIZE"]="10M"
@@ -46,16 +46,16 @@ init_config() {
 create_default_config() {
     cat > "$DEFAULT_CONFIG_FILE" << 'EOF'
 # =============================================================================
-# Configuration par défaut MeshWatch
+# Configuration MeshWatch pour Star Déception
 # =============================================================================
 
-# Ports à surveiller (liste séparée par virgules ou plages)
-PORTS="7777,27015,25565"
+# Ports mesh Star Déception (liste séparée par virgules ou plages)
+PORTS="7777,7778,7779"
 
-# Hôte orchestrateur pour vérification de connectivité
-ORCHESTRATOR_HOST="orchestrator.example.com"
+# Orchestrateur central Star Déception
+ORCHESTRATOR_HOST="orchestrator.star-deception.com"
 
-# URL du webhook Discord pour les alertes
+# Webhook Discord pour alertes mesh (#mesh-monitoring)
 DISCORD_WEBHOOK=""
 
 # État du monitoring (true/false)
@@ -70,13 +70,13 @@ LANG="fr"
 # Timeout entre les vérifications (secondes)
 ALERT_TIMEOUT="120"
 
-# Nombre maximum de connexions simultanées
-MAX_CONN="50"
+# Nombre maximum de connexions mesh simultanées
+MAX_CONN="150"
 
-# Débit maximum autorisé (Mbps)
-MAX_BANDWIDTH_MBPS="100"
+# Débit mesh maximum autorisé (Mbps)
+MAX_BANDWIDTH_MBPS="500"
 
-# Interface réseau à surveiller (auto-détection si vide)
+# Interface réseau mesh (auto-détection si vide)
 INTERFACE=""
 
 # Cooldown entre les alertes du même type (secondes)
@@ -125,7 +125,7 @@ load_config() {
 save_config() {
     cat > "$CONFIG_FILE" << EOF
 # =============================================================================
-# Configuration MeshWatch - Générée automatiquement
+# Configuration MeshWatch Star Déception - Générée automatiquement
 # =============================================================================
 
 PORTS="${CONFIG[PORTS]}"

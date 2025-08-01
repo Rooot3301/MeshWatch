@@ -122,8 +122,9 @@ cleanup_temp_files() {
 }
 
 show_version() {
-    echo "MeshWatch v2.0"
-    echo "Système de surveillance réseau pour serveurs de jeu"
+    echo "MeshWatch v2.0 - Star Déception Edition"
+    echo "Système de surveillance mesh pour Star Déception"
+    echo "Architecture de serveurs maillés dynamiques"
     echo ""
     echo "Répertoires:"
     echo "  Script: $SCRIPT_DIR"
@@ -133,7 +134,10 @@ show_version() {
 
 show_help() {
     cat << EOF
-MeshWatch - Surveillance dynamique des flux réseau
+MeshWatch - Surveillance mesh pour Star Déception
+
+Outil de monitoring spécialement conçu pour l'architecture de serveurs
+maillés dynamiques du projet Star Déception.
 
 UTILISATION:
     ./meshwatch.sh [OPTIONS]
@@ -141,20 +145,25 @@ UTILISATION:
 OPTIONS:
     -h, --help      Afficher cette aide
     -v, --version   Afficher la version
-    -c, --config    Afficher la configuration
-    -s, --status    Afficher le statut du monitoring
+    -c, --config    Afficher la configuration mesh
+    -s, --status    Afficher le statut de surveillance
 
 EXEMPLES:
-    ./meshwatch.sh              # Démarrer l'interface interactive
-    ./meshwatch.sh --status     # Vérifier le statut
-    ./meshwatch.sh --config     # Voir la configuration
+    ./meshwatch.sh              # Interface interactive mesh
+    ./meshwatch.sh --status     # Statut surveillance mesh
+    ./meshwatch.sh --config     # Configuration Star Déception
 
 FICHIERS:
     Configuration: $CONFIG_DIR/meshwatch.conf
     Logs: $LOGS_DIR/meshwatch.log
     PID: /tmp/meshwatch.pid
 
-Pour plus d'informations, consultez le README.md
+STAR DÉCEPTION:
+    Ports mesh par défaut: 7777,7778,7779
+    Orchestrateur: orchestrator.star-deception.com
+    Discord: #mesh-monitoring
+
+Pour plus d'informations: README.md
 EOF
 }
 

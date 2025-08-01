@@ -16,25 +16,25 @@ readonly NC='\033[0m' # No Color
 
 # Messages multilingues
 declare -A MESSAGES_FR=(
-    ["menu_title"]="=== MeshWatch - Surveillance Réseau ==="
-    ["menu_start"]="Démarrer la surveillance"
-    ["menu_stop"]="Arrêter la surveillance"
-    ["menu_config_ports"]="Configurer les ports"
-    ["menu_config_webhook"]="Configurer webhook Discord"
+    ["menu_title"]="=== MeshWatch Star Déception - Surveillance Mesh ==="
+    ["menu_start"]="Démarrer surveillance mesh"
+    ["menu_stop"]="Arrêter surveillance mesh"
+    ["menu_config_ports"]="Configurer ports mesh"
+    ["menu_config_webhook"]="Configurer alertes Discord"
     ["menu_toggle_logging"]="Basculer journalisation"
-    ["menu_live_view"]="Voir flux en direct"
+    ["menu_live_view"]="Voir flux mesh en direct"
     ["menu_show_config"]="Afficher configuration"
     ["menu_change_lang"]="Changer de langue"
     ["menu_advanced"]="Configuration avancée"
     ["menu_quit"]="Quitter"
-    ["monitoring_started"]="Surveillance démarrée"
-    ["monitoring_stopped"]="Surveillance arrêtée"
-    ["monitoring_already_running"]="Surveillance déjà en cours"
-    ["monitoring_not_running"]="Surveillance non active"
+    ["monitoring_started"]="Surveillance mesh démarrée"
+    ["monitoring_stopped"]="Surveillance mesh arrêtée"
+    ["monitoring_already_running"]="Surveillance mesh déjà active"
+    ["monitoring_not_running"]="Surveillance mesh inactive"
     ["config_saved"]="Configuration sauvegardée"
-    ["enter_ports"]="Entrez les ports (ex: 7777,27015 ou 7000-8000):"
-    ["enter_webhook"]="Entrez l'URL du webhook Discord:"
-    ["enter_orchestrator"]="Entrez l'hôte orchestrateur:"
+    ["enter_ports"]="Ports mesh Star Déception (ex: 7777,7778 ou 7000-8000):"
+    ["enter_webhook"]="Webhook Discord (#mesh-monitoring):"
+    ["enter_orchestrator"]="Orchestrateur Star Déception:"
     ["logging_enabled"]="Journalisation activée"
     ["logging_disabled"]="Journalisation désactivée"
     ["press_enter"]="Appuyez sur Entrée pour continuer..."
@@ -57,25 +57,25 @@ declare -A MESSAGES_FR=(
 )
 
 declare -A MESSAGES_EN=(
-    ["menu_title"]="=== MeshWatch - Network Monitoring ==="
-    ["menu_start"]="Start monitoring"
-    ["menu_stop"]="Stop monitoring"
-    ["menu_config_ports"]="Configure ports"
-    ["menu_config_webhook"]="Configure Discord webhook"
+    ["menu_title"]="=== MeshWatch Star Deception - Mesh Monitoring ==="
+    ["menu_start"]="Start mesh monitoring"
+    ["menu_stop"]="Stop mesh monitoring"
+    ["menu_config_ports"]="Configure mesh ports"
+    ["menu_config_webhook"]="Configure Discord alerts"
     ["menu_toggle_logging"]="Toggle logging"
-    ["menu_live_view"]="View live flows"
+    ["menu_live_view"]="View live mesh flows"
     ["menu_show_config"]="Show configuration"
     ["menu_change_lang"]="Change language"
     ["menu_advanced"]="Advanced configuration"
     ["menu_quit"]="Quit"
-    ["monitoring_started"]="Monitoring started"
-    ["monitoring_stopped"]="Monitoring stopped"
-    ["monitoring_already_running"]="Monitoring already running"
-    ["monitoring_not_running"]="Monitoring not active"
+    ["monitoring_started"]="Mesh monitoring started"
+    ["monitoring_stopped"]="Mesh monitoring stopped"
+    ["monitoring_already_running"]="Mesh monitoring already active"
+    ["monitoring_not_running"]="Mesh monitoring inactive"
     ["config_saved"]="Configuration saved"
-    ["enter_ports"]="Enter ports (ex: 7777,27015 or 7000-8000):"
-    ["enter_webhook"]="Enter Discord webhook URL:"
-    ["enter_orchestrator"]="Enter orchestrator host:"
+    ["enter_ports"]="Star Deception mesh ports (ex: 7777,7778 or 7000-8000):"
+    ["enter_webhook"]="Discord webhook (#mesh-monitoring):"
+    ["enter_orchestrator"]="Star Deception orchestrator:"
     ["logging_enabled"]="Logging enabled"
     ["logging_disabled"]="Logging disabled"
     ["press_enter"]="Press Enter to continue..."
@@ -157,8 +157,8 @@ show_menu() {
 
 configure_ports() {
     echo -e "${YELLOW}$(get_message "enter_ports")${NC}"
-    echo -e "${BLUE}Ports actuels: $(get_config PORTS)${NC}"
-    echo -e "${CYAN}Exemples: 7777,27015,25565 ou 7000-8000 ou 7777,8000-8010${NC}"
+    echo -e "${BLUE}Ports mesh actuels: $(get_config PORTS)${NC}"
+    echo -e "${CYAN}Exemples Star Déception: 7777,7778,7779 ou 7000-8000 ou 7777,7780-7790${NC}"
     read -r new_ports
     
     if [[ -n "$new_ports" ]]; then
@@ -174,8 +174,9 @@ configure_ports() {
 
 configure_webhook() {
     echo -e "${YELLOW}$(get_message "enter_webhook")${NC}"
-    echo -e "${BLUE}Webhook actuel: ${DISCORD_WEBHOOK:-"Non configuré"}${NC}"
-    echo -e "${CYAN}Format: https://discord.com/api/webhooks/ID/TOKEN${NC}"
+    echo -e "${BLUE}Webhook Discord actuel: ${DISCORD_WEBHOOK:-"Non configuré"}${NC}"
+    echo -e "${CYAN}Canal recommandé: #mesh-monitoring${NC}"
+    echo -e "${CYAN}Format: https://discord.com/api/webhooks/STAR_DECEPTION_ID/TOKEN${NC}"
     read -r new_webhook
     
     if [[ -n "$new_webhook" ]]; then
@@ -220,18 +221,18 @@ change_language() {
 
 show_configuration() {
     clear
-    echo -e "${PURPLE}=== Configuration MeshWatch ===${NC}"
+    echo -e "${PURPLE}=== Configuration MeshWatch Star Déception ===${NC}"
     echo ""
-    echo -e "${WHITE}Ports surveillés:${NC} $(get_config PORTS)"
-    echo -e "${WHITE}Orchestrateur:${NC} $(get_config ORCHESTRATOR_HOST)"
-    echo -e "${WHITE}Webhook Discord:${NC} $(get_config DISCORD_WEBHOOK | sed 's/\(.*\/\).*/\1***/')"
-    echo -e "${WHITE}Monitoring:${NC} $(get_config MONITORING_ENABLED)"
+    echo -e "${WHITE}Ports mesh:${NC} $(get_config PORTS)"
+    echo -e "${WHITE}Orchestrateur Star Déception:${NC} $(get_config ORCHESTRATOR_HOST)"
+    echo -e "${WHITE}Discord (#mesh-monitoring):${NC} $(get_config DISCORD_WEBHOOK | sed 's/\(.*\/\).*/\1***/')"
+    echo -e "${WHITE}Surveillance mesh:${NC} $(get_config MONITORING_ENABLED)"
     echo -e "${WHITE}Journalisation:${NC} $(get_config LOGGING_ENABLED)"
     echo -e "${WHITE}Langue:${NC} $(get_config LANG)"
-    echo -e "${WHITE}Interface réseau:${NC} $(get_config INTERFACE)"
+    echo -e "${WHITE}Interface mesh:${NC} $(get_config INTERFACE)"
     echo -e "${WHITE}Timeout alerte:${NC} $(get_config ALERT_TIMEOUT)s"
-    echo -e "${WHITE}Connexions max:${NC} $(get_config MAX_CONN)"
-    echo -e "${WHITE}Débit max:${NC} $(get_config MAX_BANDWIDTH_MBPS)Mbps"
+    echo -e "${WHITE}Connexions mesh max:${NC} $(get_config MAX_CONN)"
+    echo -e "${WHITE}Débit mesh max:${NC} $(get_config MAX_BANDWIDTH_MBPS)Mbps"
     echo -e "${WHITE}Cooldown alertes:${NC} $(get_config ALERT_COOLDOWN)s"
     echo ""
     echo -e "${WHITE}Fichiers:${NC}"
@@ -242,7 +243,7 @@ show_configuration() {
 }
 
 show_live_flows() {
-    echo -e "${CYAN}=== Flux réseau en direct ===${NC}"
+    echo -e "${CYAN}=== Flux mesh Star Déception en direct ===${NC}"
     echo -e "${YELLOW}Appuyez sur Ctrl+C pour revenir au menu${NC}"
     echo ""
     
@@ -258,7 +259,7 @@ show_live_flows() {
     
     while true; do
         clear
-        echo -e "${CYAN}=== Flux réseau en direct - $(date '+%H:%M:%S') ===${NC}"
+        echo -e "${CYAN}=== Flux mesh Star Déception - $(date '+%H:%M:%S') ===${NC}"
         echo ""
         
         # Statistiques actuelles
@@ -266,16 +267,16 @@ show_live_flows() {
         local connections=$(echo "$stats" | cut -d: -f1)
         local interface=$(get_config INTERFACE)
         
-        echo -e "${WHITE}Interface: $interface | Connexions actives: $connections${NC}"
+        echo -e "${WHITE}Interface Mesh: $interface | Connexions inter-serveurs: $connections${NC}"
         echo ""
         
         # Connexions actives
-        echo -e "${WHITE}Connexions sur ports surveillés:${NC}"
-        get_active_connections | head -10 || echo "Aucune connexion détectée"
+        echo -e "${WHITE}Connexions mesh actives:${NC}"
+        get_active_connections | head -10 || echo "Aucune connexion mesh détectée"
         
         echo ""
-        echo -e "${WHITE}Processus réseau:${NC}"
-        get_network_processes | head -5 || echo "Aucun processus détecté"
+        echo -e "${WHITE}Processus Star Déception:${NC}"
+        get_network_processes | head -5 || echo "Aucun processus mesh détecté"
         
         sleep 2 || break
     done

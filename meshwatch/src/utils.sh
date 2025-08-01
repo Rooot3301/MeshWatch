@@ -14,7 +14,13 @@ log_message() {
     local level="$1"
     local message="$2"
     local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    local log_level=$(get_config LOG_LEVEL)
+    
+    # Éviter les logs pendant le cleanup
+    if [[ "${CLEANUP_CALLED:-false}" == "true" ]]; then
+        return
+    fi
+    
+    local log_level=$(get_config LOG_LEVEL 2>/dev/null || echo "INFO")
     
     # Vérifier si le niveau de log est suffisant
     case "$log_level" in
@@ -39,7 +45,7 @@ log_message() {
     fi
     
     # Journalisation dans fichier si activée
-    if [[ "$(get_config LOGGING_ENABLED)" == "true" ]]; then
+    if [[ "$(get_config LOGGING_ENABLED 2>/dev/null || echo "true")" == "true" ]]; then
         # Vérifier rotation des logs
         rotate_logs
         echo "[$timestamp] [$level] $message" >> "$LOG_FILE"

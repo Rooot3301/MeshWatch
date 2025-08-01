@@ -246,14 +246,14 @@ show_configuration() {
 }
 
 show_live_flows() {
-    echo -e "${CYAN}=== Flux mesh Star Déception en direct ===${NC}"
-    echo -e "${YELLOW}Appuyez sur Ctrl+C pour revenir au menu${NC}"
-    echo ""
+    printf "\033[0;36m=== Flux mesh Star Déception en direct ===\033[0m\n"
+    printf "\033[1;33mAppuyez sur Ctrl+C pour revenir au menu\033[0m\n"
+    printf "\n"
     
     # Gestionnaire local pour Ctrl+C
     local_cleanup() {
-        echo ""
-        echo -e "${GREEN}Retour au menu principal...${NC}"
+        printf "\n"
+        printf "\033[0;32mRetour au menu principal...\033[0m\n"
         return 0
     }
     
@@ -262,24 +262,24 @@ show_live_flows() {
     
     while true; do
         clear
-        echo -e "${CYAN}=== Flux mesh Star Déception - $(date '+%H:%M:%S') ===${NC}"
-        echo ""
+        printf "\033[0;36m=== Flux mesh Star Déception - %s ===\033[0m\n" "$(date '+%H:%M:%S')"
+        printf "\n"
         
         # Statistiques actuelles
         local stats=$(get_network_stats)
         local connections=$(echo "$stats" | cut -d: -f1)
         local interface=$(get_config INTERFACE)
         
-        echo -e "${WHITE}Interface Mesh: $interface | Connexions inter-serveurs: $connections${NC}"
-        echo ""
+        printf "\033[1;37mInterface Mesh: %s | Connexions inter-serveurs: %s\033[0m\n" "$interface" "$connections"
+        printf "\n"
         
         # Connexions actives
-        echo -e "${WHITE}Connexions mesh actives:${NC}"
-        get_active_connections | head -10 || echo "Aucune connexion mesh détectée"
+        printf "\033[1;37mConnexions mesh actives:\033[0m\n"
+        get_active_connections | head -10 || printf "Aucune connexion mesh détectée\n"
         
-        echo ""
-        echo -e "${WHITE}Processus Star Déception:${NC}"
-        get_network_processes | head -5 || echo "Aucun processus mesh détecté"
+        printf "\n"
+        printf "\033[1;37mProcessus Star Déception:\033[0m\n"
+        get_network_processes | head -5 || printf "Aucun processus mesh détecté\n"
         
         sleep 2 || break
     done

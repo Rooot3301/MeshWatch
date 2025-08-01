@@ -40,6 +40,14 @@ detect_network_interface() {
 get_network_stats() {
     local interface="${1:-$(get_config INTERFACE)}"
     
+    # Vérifier que l'interface existe
+    if [[ -z "$interface" ]] || ! ip link show "$interface" >/dev/null 2>&1; then
+        interface=$(detect_network_interface)
+        if [[ -n "$interface" ]]; then
+            set_config "INTERFACE" "$interface"
+        fi
+    fi
+    
     # Utiliser le cache si récent (< 2 secondes)
     if [[ -f "$STATS_CACHE" ]]; then
         local cache_age=$(($(date +%s) - $(stat -c %Y "$STATS_CACHE" 2>/dev/null || echo 0)))
@@ -90,8 +98,10 @@ get_network_stats() {
         local rx_bytes=$(echo "$net_stats" | awk '{print $2}')
         local tx_bytes=$(echo "$net_stats" | awk '{print $10}')
     else
+        # Interface non trouvée, utiliser des valeurs par défaut
         local rx_bytes=0
         local tx_bytes=0
+        log_message "WARN" "Interface $interface non trouvée, utilisation de valeurs par défaut"
     fi
     
     local timestamp=$(date +%s)

@@ -16,18 +16,46 @@ is_monitoring_active() {
 
 start_monitoring() {
     if is_monitoring_active; then
-        echo -e "${YELLOW}$(get_message "monitoring_already_running")${NC}"
+        printf "\033[1;33m%s\033[0m\n" "$(get_message "monitoring_already_running")"
         return 1
     fi
     
-    log_message "INFO" "$(get_message "monitoring_started")"
-    echo -e "${GREEN}$(get_message "monitoring_started")${NC}"
+    # Vérifier la configuration avant de démarrer
+    local interface=$(get_config INTERFACE)
+    if [[ -z "$interface" ]]; then
+        interface=$(detect_network_interface)
+        set_config "INTERFACE" "$interface"
+        save_config
+    fi
+    
+    # Vérifier que l'interface existe
+    if ! ip link show "$interface" >/dev/null 2>&1; then
+        printf "\033[0;31mErreur: Interface réseau '%s' non trouvée\033[0m\n" "$interface"
+        printf "\033[1;33mInterfaces disponibles:\033[0m\n"
+        ip link show | grep -E '^[0-9]+:' | cut -d: -f2 | tr -d ' '
+        return 1
+    fi
     
     # Démarrer le daemon en arrière-plan
     (
         echo $$ > "$PID_FILE"
+        # Attendre un peu pour s'assurer que le PID est écrit
+        sleep 1
         monitoring_loop
     ) &
+    
+    # Attendre que le processus démarre
+    sleep 2
+    
+    # Vérifier que le monitoring a bien démarré
+    if is_monitoring_active; then
+        log_message "INFO" "$(get_message "monitoring_started")"
+        printf "\033[0;32m%s\033[0m\n" "$(get_message "monitoring_started")"
+        printf "\033[1;36mInterface: %s | Ports: %s\033[0m\n" "$interface" "$(get_config PORTS)"
+    else
+        printf "\033[0;31mErreur: Impossible de démarrer la surveillance\033[0m\n"
+        return 1
+    fi
     
     set_config "MONITORING_ENABLED" "true"
     save_config
@@ -86,8 +114,9 @@ stop_monitoring_safe() {
 monitoring_loop() {
     local prev_stats=""
     local alert_timeout=$(get_config ALERT_TIMEOUT)
+    local interface=$(get_config INTERFACE)
     
-    log_message "INFO" "Démarrage de la boucle de monitoring (timeout: ${alert_timeout}s)"
+    log_message "INFO" "Démarrage surveillance mesh - Interface: $interface, Timeout: ${alert_timeout}s"
     
     while true; do
         # Vérifier si le monitoring doit continuer
@@ -96,8 +125,14 @@ monitoring_loop() {
             break
         fi
         
-        # Obtenir les statistiques réseau
-        local current_stats=$(get_network_stats)
+        # Obtenir les statistiques réseau avec gestion d'erreur
+        local current_stats
+        if ! current_stats=$(get_network_stats); then
+            log_message "ERROR" "Impossible d'obtenir les statistiques réseau"
+            sleep "$alert_timeout"
+            continue
+        fi
+        
         local connections=$(echo "$current_stats" | cut -d: -f1)
         
         # Calculer le débit
@@ -110,7 +145,7 @@ monitoring_loop() {
         local orchestrator_status=$(check_orchestrator)
         
         # Log des statistiques (niveau DEBUG)
-        log_message "DEBUG" "Stats: connexions=$connections, débit=${bandwidth_mbps}Mbps, orchestrateur=$orchestrator_status"
+        log_message "DEBUG" "Stats mesh: connexions=$connections, débit=${bandwidth_mbps}Mbps, orchestrateur=$orchestrator_status"
         
         # Détecter les anomalies
         detect_anomalies "$connections" "$bandwidth_mbps" "$orchestrator_status"

@@ -420,6 +420,134 @@ configure_log_level() {
     save_config
 }
 
+update_meshwatch() {
+    clear
+    echo -e "${PURPLE}=== Mise à jour MeshWatch Star Déception ===${NC}"
+    echo ""
+    
+    # Vérifier si on est dans un repo Git
+    if [[ ! -d "$SCRIPT_DIR/.git" ]]; then
+        echo -e "${RED}Erreur: MeshWatch n'est pas dans un dépôt Git${NC}"
+        echo -e "${YELLOW}Clonez le projet avec: git clone <repository-url>${NC}"
+        return 1
+    fi
+    
+    # Vérifier la connectivité
+    echo -e "${BLUE}Vérification de la connectivité...${NC}"
+    if ! git -C "$SCRIPT_DIR" fetch --dry-run 2>/dev/null; then
+        echo -e "${RED}Erreur: Impossible de contacter le dépôt distant${NC}"
+        return 1
+    fi
+    
+    # Vérifier s'il y a des mises à jour
+    local current_commit=$(git -C "$SCRIPT_DIR" rev-parse HEAD)
+    local remote_commit=$(git -C "$SCRIPT_DIR" rev-parse origin/main 2>/dev/null || git -C "$SCRIPT_DIR" rev-parse origin/master 2>/dev/null)
+    
+    if [[ "$current_commit" == "$remote_commit" ]]; then
+        echo -e "${GREEN}✅ MeshWatch est déjà à jour !${NC}"
+        echo -e "${CYAN}Version actuelle: $MESHWATCH_VERSION${NC}"
+        return 0
+    fi
+    
+    echo -e "${YELLOW}📦 Mise à jour disponible !${NC}"
+    echo -e "${BLUE}Commit actuel: ${current_commit:0:8}${NC}"
+    echo -e "${BLUE}Nouveau commit: ${remote_commit:0:8}${NC}"
+    echo ""
+    
+    # Demander confirmation
+    echo -n "Voulez-vous mettre à jour ? (o/N): "
+    read -r confirm
+    if [[ ! "$confirm" =~ ^[oO]$ ]]; then
+        echo -e "${YELLOW}Mise à jour annulée${NC}"
+        return 0
+    fi
+    
+    # Arrêter le monitoring si actif
+    if is_monitoring_active; then
+        echo -e "${BLUE}Arrêt de la surveillance mesh...${NC}"
+        stop_monitoring_safe
+    fi
+    
+    # Sauvegarder la configuration
+    echo -e "${BLUE}Sauvegarde de la configuration...${NC}"
+    local backup_file="/tmp/meshwatch_config_backup_$(date +%s).conf"
+    if [[ -f "$CONFIG_FILE" ]]; then
+        cp "$CONFIG_FILE" "$backup_file"
+        echo -e "${GREEN}Configuration sauvegardée: $backup_file${NC}"
+    fi
+    
+    # Effectuer la mise à jour
+    echo -e "${BLUE}Téléchargement des mises à jour...${NC}"
+    if git -C "$SCRIPT_DIR" pull; then
+        echo -e "${GREEN}✅ Mise à jour réussie !${NC}"
+        
+        # Restaurer la configuration si elle existe
+        if [[ -f "$backup_file" ]]; then
+            cp "$backup_file" "$CONFIG_FILE"
+            echo -e "${GREEN}Configuration restaurée${NC}"
+        fi
+        
+        # Rendre le script exécutable
+        chmod +x "$SCRIPT_DIR/meshwatch.sh"
+        chmod +x "$SCRIPT_DIR/src/"*.sh
+        
+        echo ""
+        echo -e "${CYAN}🚀 MeshWatch Star Déception mis à jour avec succès !${NC}"
+        echo -e "${YELLOW}Redémarrez le script pour appliquer les changements${NC}"
+        echo ""
+        echo -n "Redémarrer maintenant ? (o/N): "
+        read -r restart
+        if [[ "$restart" =~ ^[oO]$ ]]; then
+            echo -e "${GREEN}Redémarrage...${NC}"
+            sleep 2
+            exec "$SCRIPT_DIR/meshwatch.sh"
+        fi
+    else
+        echo -e "${RED}❌ Erreur lors de la mise à jour${NC}"
+        if [[ -f "$backup_file" ]]; then
+            echo -e "${BLUE}Configuration de sauvegarde disponible: $backup_file${NC}"
+        fi
+        return 1
+    fi
+}
+
+show_version_info() {
+    clear
+    echo -e "${PURPLE}=== Informations Version ===${NC}"
+    echo ""
+    echo -e "${WHITE}MeshWatch Star Déception${NC}"
+    echo -e "${CYAN}Version: $MESHWATCH_VERSION${NC}"
+    echo -e "${CYAN}Build: $BUILD_DATE${NC}"
+    echo ""
+    
+    # Informations Git si disponible
+    if [[ -d "$SCRIPT_DIR/.git" ]]; then
+        local commit=$(git -C "$SCRIPT_DIR" rev-parse --short HEAD 2>/dev/null || echo "inconnu")
+        local branch=$(git -C "$SCRIPT_DIR" branch --show-current 2>/dev/null || echo "inconnu")
+        local last_commit_date=$(git -C "$SCRIPT_DIR" log -1 --format=%cd --date=short 2>/dev/null || echo "inconnu")
+        
+        echo -e "${WHITE}Informations Git:${NC}"
+        echo -e "${BLUE}  Branche: $branch${NC}"
+        echo -e "${BLUE}  Commit: $commit${NC}"
+        echo -e "${BLUE}  Dernière modification: $last_commit_date${NC}"
+        echo ""
+    fi
+    
+    echo -e "${WHITE}Architecture:${NC}"
+    echo -e "${BLUE}  Système: $(uname -s) $(uname -m)${NC}"
+    echo -e "${BLUE}  Bash: $BASH_VERSION${NC}"
+    echo ""
+    
+    echo -e "${WHITE}Répertoires:${NC}"
+    echo -e "${BLUE}  Script: $SCRIPT_DIR${NC}"
+    echo -e "${BLUE}  Config: $CONFIG_DIR${NC}"
+    echo -e "${BLUE}  Logs: $LOGS_DIR${NC}"
+    echo ""
+    
+    echo -e "${WHITE}Star Déception - Architecture Mesh Dynamique${NC}"
+    echo -e "${CYAN}Surveillance réseau pour serveurs maillés${NC}"
+}
+
 start_ui() {
     while true; do
         show_menu

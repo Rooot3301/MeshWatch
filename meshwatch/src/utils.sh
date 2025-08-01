@@ -121,16 +121,8 @@ cleanup_temp_files() {
     rm -rf /tmp/meshwatch_cooldowns
 }
 
-cleanup() {
-    echo ""
-    echo -e "${GREEN}Arrêt propre de MeshWatch...${NC}"
-    stop_monitoring_safe >/dev/null 2>&1
-    cleanup_temp_files
-    exit 0
-}
-
 show_version() {
-    echo "MeshWatch v2.0 - Star Déception Edition"
+    echo "MeshWatch v$MESHWATCH_VERSION - Star Déception Edition"
     echo "Système de surveillance mesh pour Star Déception"
     echo "Architecture de serveurs maillés dynamiques"
     echo ""
@@ -142,7 +134,7 @@ show_version() {
 
 show_help() {
     cat << EOF
-MeshWatch - Surveillance mesh pour Star Déception
+MeshWatch v$MESHWATCH_VERSION - Surveillance mesh pour Star Déception
 
 Outil de monitoring spécialement conçu pour l'architecture de serveurs
 maillés dynamiques du projet Star Déception.

@@ -60,13 +60,21 @@ stop_monitoring() {
     set_config "MONITORING_ENABLED" "false"
     save_config
     
-    log_message "INFO" "$(get_message "monitoring_stopped")"
     echo -e "${GREEN}$(get_message "monitoring_stopped")${NC}"
 }
 
 stop_monitoring_safe() {
     if is_monitoring_active; then
-        stop_monitoring >/dev/null 2>&1
+        local pid=$(cat "$PID_FILE" 2>/dev/null)
+        if [[ -n "$pid" ]]; then
+            kill "$pid" 2>/dev/null
+            sleep 1
+            if kill -0 "$pid" 2>/dev/null; then
+                kill -9 "$pid" 2>/dev/null
+            fi
+        fi
+        rm -f "$PID_FILE"
+        set_config "MONITORING_ENABLED" "false"
     fi
 }
 

@@ -53,8 +53,10 @@ main() {
 # =============================================================================
 
 cleanup() {
-    log_message "INFO" "Arrêt propre de MeshWatch"
+    echo ""
+    echo -e "${GREEN}Arrêt du script MeshWatch${NC}"
     stop_monitoring_safe
+    cleanup_temp_files
     exit 0
 }
 

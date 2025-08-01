@@ -167,7 +167,7 @@ export_config_vars() {
 
 get_config() {
     local key="$1"
-    local default="$2"
+    local default="${2:-}"
     echo "${CONFIG[$key]:-$default}"
 }
 

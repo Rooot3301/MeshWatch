@@ -210,5 +210,9 @@ validate_ports() {
 
 validate_webhook() {
     local webhook="$1"
-    [[ "$webhook" =~ ^https://discord(app)?\.com/api/webhooks/[0-9]+/[a-zA-Z0-9_-]+$ ]]
+    if [[ "$webhook" =~ ^https://discord(app)?\.com/api/webhooks/[0-9]+/[a-zA-Z0-9_-]+$ ]]; then
+        return 0
+    else
+        return 1
+    fi
 }

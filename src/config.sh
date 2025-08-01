@@ -104,6 +104,33 @@ load_config() {
             [[ -z "$key" ]] && continue
             
             # Nettoyer les guillemets
+            value=$(echo "$value" | sed 's/^"//;s/"$//')
+            CONFIG["$key"]="$value"
+        done < "$DEFAULT_CONFIG_FILE"
+    fi
+    
+    # Surcharger avec la configuration utilisateur
+    if [[ -f "$CONFIG_FILE" ]]; then
+        while IFS='=' read -r key value; do
+            [[ "$key" =~ ^[[:space:]]*# ]] && continue
+            [[ -z "$key" ]] && continue
+            
+            value=$(echo "$value" | sed 's/^"//;s/"$//')
+            CONFIG["$key"]="$value"
+        done < "$CONFIG_FILE"
+    fi
+    
+    # Auto-détecter l'interface si nécessaire
+    if [[ -z "${CONFIG[INTERFACE]}" ]]; then
+        if command -v detect_network_interface >/dev/null 2>&1; then
+            CONFIG["INTERFACE"]=$(detect_network_interface)
+        else
+            CONFIG["INTERFACE"]="eth0"
+        fi
+    fi
+    
+    # Exporter les variables pour les autres modules
+    export_config_vars
 }
 
 save_config() {

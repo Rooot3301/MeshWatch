@@ -129,6 +129,7 @@ show_menu() {
     clear
     show_ascii_art
     echo -e "${PURPLE}$(get_message "menu_title")${NC}"
+    echo -e "${CYAN}Version $MESHWATCH_VERSION - Build $BUILD_DATE${NC}"
     echo ""
     
     # Afficher le statut
@@ -150,7 +151,9 @@ show_menu() {
     echo "7)  $(get_message "menu_show_config")"
     echo "8)  $(get_message "menu_change_lang")"
     echo "9)  $(get_message "menu_advanced")"
-    echo "10) $(get_message "menu_quit")"
+    echo "10) Mettre à jour MeshWatch"
+    echo "11) Informations version"
+    echo "12) $(get_message "menu_quit")"
     echo ""
     echo -n "Choix: "
 }
@@ -458,6 +461,14 @@ start_ui() {
                 advanced_config_menu
                 ;;
             10)
+                update_meshwatch
+                read -p "$(get_message "press_enter")" -r
+                ;;
+            11)
+                show_version_info
+                read -p "$(get_message "press_enter")" -r
+                ;;
+            12)
                 echo -e "${GREEN}Au revoir!${NC}"
                 exit 0
                 ;;

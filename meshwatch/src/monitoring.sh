@@ -35,7 +35,7 @@ start_monitoring() {
 
 stop_monitoring() {
     if ! is_monitoring_active; then
-        echo -e "${YELLOW}$(get_message "monitoring_not_running")${NC}"
+        printf "\033[1;33m%s\033[0m\n" "$(get_message "monitoring_not_running")"
         return 1
     fi
     
@@ -60,21 +60,26 @@ stop_monitoring() {
     set_config "MONITORING_ENABLED" "false"
     save_config
     
-    echo -e "${GREEN}$(get_message "monitoring_stopped")${NC}"
+    printf "\033[0;32m%s\033[0m\n" "$(get_message "monitoring_stopped")"
 }
 
 stop_monitoring_safe() {
+    # Version silencieuse pour cleanup
     if is_monitoring_active; then
         local pid=$(cat "$PID_FILE" 2>/dev/null)
         if [[ -n "$pid" ]]; then
-            kill "$pid" 2>/dev/null
-            sleep 1
+            kill -TERM "$pid" 2>/dev/null || true
+            local count=0
+            while kill -0 "$pid" 2>/dev/null && (( count < 5 )); do
+                sleep 1
+                ((count++))
+            done
             if kill -0 "$pid" 2>/dev/null; then
-                kill -9 "$pid" 2>/dev/null
+                kill -KILL "$pid" 2>/dev/null || true
             fi
         fi
         rm -f "$PID_FILE"
-        set_config "MONITORING_ENABLED" "false"
+        # Ne pas sauvegarder la config dans cleanup pour éviter les boucles
     fi
 }
 

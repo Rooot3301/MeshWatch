@@ -1,14 +1,18 @@
 #!/bin/bash
 
 # =============================================================================
-# MeshWatch - Surveillance dynamique des flux sortants d'un serveur de jeu
+# MeshWatch Star Déception - Surveillance mesh dynamique
 # =============================================================================
-# Version: 2.0
+# Version: 2.1.0
 # Auteur: Assistant IA
-# Description: Système de monitoring réseau avec alertes Discord
+# Description: Système de monitoring mesh pour Star Déception
 # =============================================================================
 
 set -euo pipefail
+
+# Version du script
+readonly MESHWATCH_VERSION="2.1.0"
+readonly BUILD_DATE=$(date '+%Y%m%d')
 
 # Variables globales
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -52,11 +56,35 @@ main() {
 # GESTION DES SIGNAUX
 # =============================================================================
 
+# Variable pour éviter les appels multiples de cleanup
+CLEANUP_CALLED=false
+
 cleanup() {
-    echo ""
-    echo -e "${GREEN}Arrêt du script MeshWatch${NC}"
-    stop_monitoring_safe
-    cleanup_temp_files
+    # Éviter les appels multiples
+    if [[ "$CLEANUP_CALLED" == "true" ]]; then
+        return
+    fi
+    CLEANUP_CALLED=true
+    
+    printf "\n\033[0;32mArrêt de MeshWatch Star Déception...\033[0m\n"
+    
+    # Arrêt direct du monitoring sans logs
+    if [[ -f "/tmp/meshwatch.pid" ]]; then
+        local pid=$(cat "/tmp/meshwatch.pid" 2>/dev/null || echo "")
+        if [[ -n "$pid" ]] && kill -0 "$pid" 2>/dev/null; then
+            kill -TERM "$pid" 2>/dev/null || true
+            sleep 1
+            if kill -0 "$pid" 2>/dev/null; then
+                kill -KILL "$pid" 2>/dev/null || true
+            fi
+        fi
+        rm -f "/tmp/meshwatch.pid"
+    fi
+    
+    # Nettoyage des fichiers temporaires
+    rm -f /tmp/meshwatch_stats_cache /tmp/meshwatch_interface_cache
+    rm -rf /tmp/meshwatch_cooldowns
+    
     exit 0
 }
 

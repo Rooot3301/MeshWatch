@@ -82,7 +82,7 @@ EOF
             -X POST \
             -d "$payload" \
             "$webhook" \
-            --silent --output /dev/null --max-time 10; then
+            --silent --output /dev/null --max-time 10 --fail; then
         log_message "DEBUG" "Alerte Discord envoyée: $title"
     else
         log_message "ERROR" "Échec envoi alerte Discord: $title"

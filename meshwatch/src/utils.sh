@@ -136,6 +136,7 @@ show_version() {
     echo "  Script: $SCRIPT_DIR"
     echo "  Config: $CONFIG_DIR"
     echo "  Logs: $LOGS_DIR"
+    echo "  Reports: $REPORTS_DIR"
 }
 
 show_help() {
@@ -153,15 +154,18 @@ OPTIONS:
     -v, --version   Afficher la version
     -c, --config    Afficher la configuration mesh
     -s, --status    Afficher le statut de surveillance
+    --temp-monitor DURATION FORMAT  Surveillance temporaire (ex: --temp-monitor 300 html)
 
 EXEMPLES:
     ./meshwatch.sh              # Interface interactive mesh
     ./meshwatch.sh --status     # Statut surveillance mesh
     ./meshwatch.sh --config     # Configuration Star Déception
+    ./meshwatch.sh --temp-monitor 600 txt  # Surveillance 10min + rapport TXT
 
 FICHIERS:
     Configuration: $CONFIG_DIR/meshwatch.conf
     Logs: $LOGS_DIR/meshwatch.log
+    Rapports: $REPORTS_DIR/
     PID: /tmp/meshwatch.pid
 
 STAR DÉCEPTION:
@@ -200,6 +204,31 @@ parse_arguments() {
                     local uptime=$(echo "$status" | cut -d: -f3)
                     echo "MeshWatch: En cours (PID: $pid, Uptime: $uptime)"
                 fi
+                exit 0
+                ;;
+            --temp-monitor)
+                if [[ $# -lt 3 ]]; then
+                    echo "Usage: --temp-monitor DURATION FORMAT" >&2
+                    echo "Exemple: --temp-monitor 300 html" >&2
+                    exit 1
+                fi
+                shift
+                local duration="$1"
+                shift
+                local format="$1"
+                
+                if ! [[ "$duration" =~ ^[0-9]+$ ]] || (( duration < 30 )); then
+                    echo "Erreur: Durée invalide (minimum 30 secondes)" >&2
+                    exit 1
+                fi
+                
+                if [[ "$format" != "txt" && "$format" != "html" ]]; then
+                    echo "Erreur: Format invalide (txt ou html)" >&2
+                    exit 1
+                fi
+                
+                load_config
+                start_temporary_monitoring "$duration" "$format"
                 exit 0
                 ;;
             *)

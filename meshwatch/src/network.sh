@@ -89,7 +89,7 @@ get_network_stats() {
     # Compter les connexions sur les ports configurés
     local connections=0
     if [[ -n "$port_list" ]]; then
-        connections=$(ss -tuln 2>/dev/null | grep -E ":($port_list)" | wc -l || echo 0)
+        connections=$(ss -tuln 2>/dev/null | grep -E ":($port_list)" | wc -l 2>/dev/null || echo 0)
     fi
     
     # Obtenir les statistiques de l'interface
@@ -101,7 +101,9 @@ get_network_stats() {
         # Interface non trouvée, utiliser des valeurs par défaut
         local rx_bytes=0
         local tx_bytes=0
-        log_message "WARN" "Interface $interface non trouvée, utilisation de valeurs par défaut"
+        if command -v log_message >/dev/null 2>&1; then
+            log_message "WARN" "Interface $interface non trouvée, utilisation de valeurs par défaut"
+        fi
     fi
     
     local timestamp=$(date +%s)

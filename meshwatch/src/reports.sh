@@ -125,12 +125,12 @@ show_progress_bar() {
             bar+="░"
         done
         
-        printf "\r\033[0;36m[%s] %d%% (%ds/%ds)\033[0m" "$bar" "$progress" "$elapsed" "$duration"
+        printf "\r\033[0;36m[%s] %d%% (%ds/%ds) - Collecte en cours...\033[0m" "$bar" "$progress" "$elapsed" "$duration"
         
         sleep 1
     done
     
-    printf "\r\033[0;36m[%s] 100%% (%ds/%ds)\033[0m" "$(printf '█%.0s' {1..50})" "$duration" "$duration"
+    printf "\r\033[0;36m[%s] 100%% (%ds/%ds) - Terminé !\033[0m\n" "$(printf '█%.0s' {1..50})" "$duration" "$duration"
 }
 
 generate_report() {

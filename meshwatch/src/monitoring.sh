@@ -36,6 +36,13 @@ start_monitoring() {
         return 1
     fi
     
+    # Vérifier les ports configurés
+    local ports=$(get_config PORTS)
+    if ! validate_ports "$ports"; then
+        printf "\033[0;31mErreur: Configuration des ports invalide: %s\033[0m\n" "$ports"
+        return 1
+    fi
+    
     # Démarrer le daemon en arrière-plan
     (
         echo $$ > "$PID_FILE"

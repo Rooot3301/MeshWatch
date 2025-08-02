@@ -28,15 +28,17 @@ mkdir -p "$CONFIG_DIR" "$LOGS_DIR" "$REPORTS_DIR"
 source "$SRC_DIR/config.sh"
 source "$SRC_DIR/network.sh"
 source "$SRC_DIR/alerts.sh"
+source "$SRC_DIR/monitoring.sh"
+source "$SRC_DIR/reports.sh"
+source "$SRC_DIR/utils.sh"
 source "$SRC_DIR/ui.sh"
-# Charger les modules dans l'ordre correct (avec gestion d'erreur)
+
+# Vérifier que le répertoire src existe
 if [[ ! -d "$SRC_DIR" ]]; then
     echo "Erreur: Répertoire src/ non trouvé dans $SCRIPT_DIR" >&2
     echo "Assurez-vous d'exécuter le script depuis le répertoire meshwatch/" >&2
     exit 1
 fi
-
-source "$SRC_DIR/utils.sh"
 
 # =============================================================================
 # FONCTION PRINCIPALE

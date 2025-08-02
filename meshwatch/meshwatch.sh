@@ -18,6 +18,7 @@ readonly BUILD_DATE=$(date '+%Y%m%d')
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly CONFIG_DIR="$SCRIPT_DIR/config"
 readonly LOGS_DIR="$SCRIPT_DIR/logs"
+readonly REPORTS_DIR="$SCRIPT_DIR/reports"
 readonly SRC_DIR="$SCRIPT_DIR/src"
 
 # Créer les répertoires nécessaires

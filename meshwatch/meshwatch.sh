@@ -34,6 +34,11 @@ readonly NC='\033[0m' # No Color
 # Créer les répertoires nécessaires
 mkdir -p "$CONFIG_DIR" "$LOGS_DIR" "$REPORTS_DIR"
 
+# Exporter les variables globales pour les modules
+export SCRIPT_DIR CONFIG_DIR LOGS_DIR REPORTS_DIR SRC_DIR
+export MESHWATCH_VERSION BUILD_DATE
+export RED GREEN YELLOW BLUE PURPLE CYAN WHITE NC
+
 # Vérifier que le répertoire src existe
 if [[ ! -d "$SRC_DIR" ]]; then
     echo -e "${RED}Erreur: Répertoire src/ non trouvé dans $SCRIPT_DIR${NC}" >&2

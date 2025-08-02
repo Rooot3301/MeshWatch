@@ -4,8 +4,6 @@
 # Module de gestion de la configuration
 # =============================================================================
 
-readonly CONFIG_FILE="$CONFIG_DIR/meshwatch.conf"
-readonly DEFAULT_CONFIG_FILE="$CONFIG_DIR/default.conf"
 
 # Variables de configuration par défaut
 declare -A DEFAULT_CONFIG=(

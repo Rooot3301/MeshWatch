@@ -68,6 +68,7 @@ meshwatch/
 │   ├── alerts.sh        # Système d'alertes
 │   ├── ui.sh           # Interface utilisateur
 │   ├── monitoring.sh    # Boucle de monitoring
+│   ├── reports.sh      # Génération de rapports
 │   └── utils.sh        # Fonctions utilitaires
 ├── config/              # Fichiers de configuration
 │   ├── meshwatch.conf  # Configuration utilisateur
@@ -195,6 +196,8 @@ Statut: Arrêté
 10) Surveillance temporaire + rapport
 11) Voir rapports disponibles
 12) Mettre à jour MeshWatch
+13) Informations version
+14) Quitter
 13) Informations version
 14) Quitter
 ```

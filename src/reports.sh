@@ -4,11 +4,7 @@
 # Module de génération de rapports
 # =============================================================================
 
-readonly REPORTS_DIR="$SCRIPT_DIR/reports"
 readonly TEMP_DATA_FILE="/tmp/meshwatch_temp_data.log"
-
-# Créer le répertoire des rapports
-mkdir -p "$REPORTS_DIR"
 
 # =============================================================================
 # FONCTIONS DE RAPPORT
@@ -39,7 +35,7 @@ start_temporary_monitoring() {
     
     # Démarrer la surveillance temporaire
     (
-        echo $$ > "$PID_FILE"
+        echo $$ > "/tmp/meshwatch.pid"
         temporary_monitoring_loop "$duration"
     ) &
     
@@ -57,7 +53,7 @@ start_temporary_monitoring() {
     generate_report "$format"
     
     # Nettoyer
-    rm -f "$PID_FILE" "$TEMP_DATA_FILE"
+    rm -f "/tmp/meshwatch.pid" "$TEMP_DATA_FILE"
 }
 
 temporary_monitoring_loop() {

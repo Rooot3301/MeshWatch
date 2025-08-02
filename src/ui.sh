@@ -47,6 +47,7 @@
          esac
          
 -        if [[ $choice != 8 ]]; then
+        if [[ $choice != 14 ]]; then
 +        if [[ $choice != 14 ]]; then
              read -p "$(get_message "press_enter")" -r
          fi

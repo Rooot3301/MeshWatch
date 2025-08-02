@@ -41,6 +41,15 @@ MeshWatch surveille cette infrastructure critique pour garantir une expérience 
 - **Système de cooldown** intelligent
 - **Journalisation** des événements mesh critiques
 
+### 📊 Surveillance Temporaire et Rapports
+- **Surveillance temporaire** avec durée configurable
+- **Collecte de données** détaillée pendant la surveillance
+- **Génération de rapports** automatique (TXT/HTML)
+- **Analyse statistique** des performances mesh
+- **Recommandations** basées sur les données collectées
+- **Rapports HTML interactifs** avec graphiques et métriques
+- **Historique des rapports** avec gestion automatique
+
 ### ⚙️ Configuration Avancée
 - **Seuils personnalisables** pour tous les types d'alertes
 - **Webhook Discord** avec test de connectivité
@@ -63,6 +72,9 @@ meshwatch/
 ├── config/              # Fichiers de configuration
 │   ├── meshwatch.conf  # Configuration utilisateur
 │   └── default.conf    # Configuration par défaut
+├── reports/            # Rapports générés
+│   ├── meshwatch_report_YYYYMMDD_HHMMSS.txt
+│   └── meshwatch_report_YYYYMMDD_HHMMSS.html
 ├── logs/               # Journaux
 │   └── meshwatch.log   # Log principal
 └── docs/              # Documentation
@@ -180,7 +192,11 @@ Statut: Arrêté
 7)  Afficher configuration
 8)  Changer de langue
 9)  Configuration avancée
-10) Quitter
+10) Surveillance temporaire + rapport
+11) Voir rapports disponibles
+12) Mettre à jour MeshWatch
+13) Informations version
+14) Quitter
 ```
 
 ### Ligne de Commande
@@ -197,7 +213,31 @@ Statut: Arrêté
 
 # Afficher la version
 ./meshwatch.sh --version
+
+# Surveillance temporaire avec rapport
+./meshwatch.sh --temp-monitor 600 html  # 10 minutes, rapport HTML
+./meshwatch.sh --temp-monitor 300 txt   # 5 minutes, rapport TXT
 ```
+
+### Surveillance Temporaire
+
+La surveillance temporaire permet de collecter des données pendant une durée définie et de générer automatiquement un rapport détaillé :
+
+1. **Configuration** : Choisir la durée (minimum 30 secondes) et le format (TXT/HTML)
+2. **Collecte** : Surveillance avec barre de progression en temps réel
+3. **Analyse** : Calcul automatique des statistiques et métriques
+4. **Rapport** : Génération d'un rapport complet avec recommandations
+
+**Données collectées :**
+- Nombre de connexions mesh par échantillon
+- Débit réseau inter-serveurs (Mbps)
+- État de l'orchestrateur Star Déception
+- Connexions actives et processus réseau
+- Statistiques de trafic (RX/TX bytes)
+
+**Rapports générés :**
+- **TXT** : Rapport texte simple avec toutes les données
+- **HTML** : Rapport web interactif avec mise en forme avancée
 
 ### Vue des Flux en Direct
 
@@ -254,6 +294,7 @@ Pour éviter le spam d'alertes, MeshWatch implémente un système de cooldown :
 meshwatch/logs/meshwatch.log      # Log principal
 meshwatch/logs/meshwatch.log.1    # Rotation précédente
 meshwatch/logs/meshwatch.log.2    # ...
+meshwatch/reports/                # Rapports de surveillance
 ```
 
 ## 🛡️ Sécurité et Bonnes Pratiques
@@ -349,6 +390,12 @@ rm -f meshwatch/config/meshwatch.conf
 3. Valider avec l'**équipe infrastructure**
 4. Déployer sur les **serveurs de test** avant production
 
+### Rapports et Analyse
+1. Utiliser la **surveillance temporaire** pour collecter des données
+2. Analyser les **rapports HTML** pour identifier les tendances
+3. Partager les **métriques de performance** avec l'équipe
+4. Optimiser la **configuration mesh** basée sur les recommandations
+
 ## 📄 Licence
 
 Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
@@ -362,4 +409,4 @@ Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
 ---
 
-**MeshWatch v2.0** - Surveillance mesh pour Star Déception 🌌🕸️
+**MeshWatch v2.1** - Surveillance mesh pour Star Déception 🌌🕸️

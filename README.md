@@ -114,12 +114,13 @@ cd meshwatch
 
 2. **Rendre le script exécutable** :
 ```bash
-chmod +x meshwatch.sh
+chmod +x meshwatch/meshwatch.sh
 chmod +x src/*.sh
 ```
 
 3. **Lancer MeshWatch** :
 ```bash
+cd meshwatch
 ./meshwatch.sh
 ```
 

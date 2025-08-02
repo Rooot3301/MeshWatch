@@ -21,14 +21,20 @@ readonly LOGS_DIR="$SCRIPT_DIR/logs"
 readonly SRC_DIR="$SCRIPT_DIR/src"
 
 # Créer les répertoires nécessaires
-mkdir -p "$CONFIG_DIR" "$LOGS_DIR"
+mkdir -p "$CONFIG_DIR" "$LOGS_DIR" "$REPORTS_DIR"
 
 # Charger les modules
 source "$SRC_DIR/config.sh"
 source "$SRC_DIR/network.sh"
 source "$SRC_DIR/alerts.sh"
 source "$SRC_DIR/ui.sh"
-source "$SRC_DIR/monitoring.sh"
+# Charger les modules dans l'ordre correct (avec gestion d'erreur)
+if [[ ! -d "$SRC_DIR" ]]; then
+    echo "Erreur: Répertoire src/ non trouvé dans $SCRIPT_DIR" >&2
+    echo "Assurez-vous d'exécuter le script depuis le répertoire meshwatch/" >&2
+    exit 1
+fi
+
 source "$SRC_DIR/utils.sh"
 
 # =============================================================================

@@ -152,10 +152,10 @@ show_menu() {
     echo "8)  $(get_message "menu_change_lang")"
     echo "9)  $(get_message "menu_advanced")"
     echo "10) Mettre à jour MeshWatch"
-    echo "11) Informations version"
-    echo "12) $(get_message "menu_quit")"
-    echo ""
-    echo -n "Choix: "
+    echo "11) Surveillance temporaire + rapport"
+    echo "12) Voir rapports disponibles"
+    echo "13) Informations version"
+    echo "14) $(get_message "menu_quit")"
 }
 
 configure_ports() {
@@ -581,15 +581,15 @@ start_ui() {
                 show_configuration
                 read -p "$(get_message "press_enter")" -r
                 ;;
-            8)
-                change_language
+                update_meshwatch
                 read -p "$(get_message "press_enter")" -r
                 ;;
-            9)
-                advanced_config_menu
+            11)
+                configure_temporary_monitoring
+                read -p "$(get_message "press_enter")" -r
                 ;;
-            10)
-                update_meshwatch
+            12)
+                list_reports
                 read -p "$(get_message "press_enter")" -r
                 ;;
             11)
@@ -606,4 +606,4 @@ start_ui() {
                 ;;
         esac
     done
-}
+        if [[ $choice != 14 ]]; then

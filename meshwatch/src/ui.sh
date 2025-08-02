@@ -156,6 +156,8 @@ show_menu() {
     echo "12) Voir rapports disponibles"
     echo "13) Informations version"
     echo "14) $(get_message "menu_quit")"
+    echo ""
+    echo -n "Choix: "
 }
 
 configure_ports() {
@@ -581,6 +583,14 @@ start_ui() {
                 show_configuration
                 read -p "$(get_message "press_enter")" -r
                 ;;
+            8)
+                change_language
+                read -p "$(get_message "press_enter")" -r
+                ;;
+            9)
+                advanced_config_menu
+                ;;
+            10)
                 update_meshwatch
                 read -p "$(get_message "press_enter")" -r
                 ;;
@@ -592,11 +602,11 @@ start_ui() {
                 list_reports
                 read -p "$(get_message "press_enter")" -r
                 ;;
-            11)
+            13)
                 show_version_info
                 read -p "$(get_message "press_enter")" -r
                 ;;
-            12)
+            14)
                 echo -e "${GREEN}Au revoir!${NC}"
                 exit 0
                 ;;
@@ -606,4 +616,4 @@ start_ui() {
                 ;;
         esac
     done
-        if [[ $choice != 14 ]]; then
+}

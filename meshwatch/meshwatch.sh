@@ -4,7 +4,7 @@
 # MeshWatch Star Déception - Surveillance mesh dynamique
 # =============================================================================
 # Version: 2.2.0
-# Auteur: Assistant IA
+# Auteur: Root3301
 # Description: Système de monitoring mesh pour Star Déception
 # =============================================================================
 
